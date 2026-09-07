@@ -1,5 +1,7 @@
 # Clipboard History — GNOME Shell Extension
 
+> 🚧 **UNDER DEVELOPMENT** — This extension is a work in progress. Features may change, bugs are expected, and it's tested only on GNOME Shell 50 (Ubuntu 26.04). Use at your own risk; report issues as you find them.
+
 Top-bar clipboard history for Ubuntu 26.04 (GNOME Shell 45-50, Wayland). Captures copied text + links, with a searchable popup to copy back, open links, delete, pause capture, and clear all. Built by Moss AI Studio.
 
 ## Features
