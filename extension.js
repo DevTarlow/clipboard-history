@@ -1,5 +1,6 @@
 import St from 'gi://St';
 import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
@@ -28,14 +29,23 @@ export default class ClipboardHistoryExtension extends Extension {
 
         // Super+Shift+V toggles the popup (schema compiled in schemas/)
         this.settings = this.getSettings();
-        this.add_keybinding('clipboard-history-popup', this.settings, 'popup-shortcut',
-            () => this._indicator.menu.toggle());
+        this._keybindingName = 'clipboard-history-popup';
+        global.display.add_keybinding(
+            this._keybindingName,
+            this.settings,
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            () => this._indicator.menu.toggle()
+        );
 
         this._clipboard = global.display;
         this._clipSignal = this._clipboard.connect('clipboard-owner-changed', () => this._onClipboardChanged());
     }
 
     disable() {
+        if (this._keybindingName) {
+            global.display.remove_keybinding(this._keybindingName);
+            this._keybindingName = null;
+        }
         if (this._clipSignal) {
             this._clipboard.disconnect(this._clipSignal);
             this._clipSignal = null;
