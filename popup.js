@@ -19,6 +19,7 @@ export function buildPopup(menu, { onCopy, onDelete, onClear, onTogglePause }) {
 
     // --- scrollable list ---
     const scrollItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false });
+    scrollItem.set_width(-1); // let it size to content
     const scroll = new St.ScrollView({
         style_class: 'clipboard-history-scroll',
         vscrollbar_policy: St.PolicyType.AUTOMATIC,
