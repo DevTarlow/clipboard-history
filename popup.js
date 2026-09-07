@@ -25,7 +25,7 @@ export function buildPopup(menu, { onCopy, onDelete, onClear, onTogglePause }) {
         hscrollbar_policy: St.PolicyType.NEVER,
     });
     const list = new St.BoxLayout({ vertical: true, style_class: 'clipboard-history-list' });
-    scroll.add_actor(list);
+    scroll.add_child(list);
     scrollItem.add_child(scroll);
     menu.addMenuItem(scrollItem);
 
