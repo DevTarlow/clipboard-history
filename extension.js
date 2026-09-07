@@ -57,9 +57,10 @@ export default class ClipboardHistoryExtension extends Extension {
         // Clipboard watch: Meta.Selection's owner-changed signal.
         // (St.Clipboard defines NO signals in GNOME 50, and Meta.Display has no
         // clipboard-owner-changed either — both were tried and failed at runtime.)
+        // Callback args per mutter's meta-clipboard-manager.c: (selection, selection_type, new_owner, ...)
         this._clipboard = global.display.get_selection();
         this._clipSignal = this._clipboard.connect('owner-changed',
-            (sel, newOwner, selType) => this._onClipboardChanged(selType));
+            (sel, selType, newOwner) => this._onClipboardChanged(selType));
     }
 
     disable() {
@@ -87,7 +88,8 @@ export default class ClipboardHistoryExtension extends Extension {
 
     _onClipboardChanged(selType) {
         if (this._paused) return;
-        // Only react to real CLIPBOARD changes, not PRIMARY (middle-click) noise
+        // Only react to real CLIPBOARD changes, not PRIMARY (middle-click) noise.
+        // selType is a Meta.SelectionType enum; mutter itself filters this same way.
         if (selType !== undefined && selType !== Meta.SelectionType.SELECTION_CLIPBOARD) return;
         const clip = St.Clipboard.get_default();
         clip.get_text(St.ClipboardType.CLIPBOARD, (clipboard, text) => {
