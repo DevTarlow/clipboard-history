@@ -1,0 +1,23 @@
+Clipboard History - install on another Ubuntu desktop
+Works with GNOME Shell 45 to 50 (Ubuntu 24.04 and newer).
+
+1. Make sure this folder has arrived on your desktop computer.
+2. Open Files on the desktop computer. Press Ctrl+H to show hidden files.
+3. Go to: Home > .local > share > gnome-shell > extensions
+   If there is no "extensions" folder inside gnome-shell, create one.
+4. Copy THIS whole folder (clipboard-history@mossaistudio.com) into the
+   extensions folder. Keep the folder name exactly as it is.
+5. Log out and back in (top-right menu > Log Out), or restart the computer.
+6. The clipboard icon appears in the top bar. Click it to see your copied
+   items. Click an item to copy it again (then paste with Ctrl+V).
+   Links have an Open button. Search filters as you type.
+   Press Super+Shift+V to open the popup quickly.
+   Tip: a 6-digit code (like a 2FA code) is not saved on purpose.
+
+Check it loaded:
+  gnome-extensions info clipboard-history@mossaistudio.com
+  You want to see "State: ACTIVE".
+
+Remove it later:
+  gnome-extensions disable clipboard-history@mossaistudio.com
+  (or just delete the folder from the extensions folder)
