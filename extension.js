@@ -88,7 +88,7 @@ export default class ClipboardHistoryExtension extends Extension {
     _onClipboardChanged(selType) {
         if (this._paused) return;
         // Only react to real CLIPBOARD changes, not PRIMARY (middle-click) noise
-        if (selType !== undefined && selType !== Meta.SelectionType.CLIPBOARD) return;
+        if (selType !== undefined && selType !== Meta.SelectionType.SELECTION_CLIPBOARD) return;
         const clip = St.Clipboard.get_default();
         clip.get_text(St.ClipboardType.CLIPBOARD, (clipboard, text) => {
             if (!text) return; // image/binary or empty -> skip for MVP
