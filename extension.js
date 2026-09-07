@@ -15,8 +15,8 @@ export default class ClipboardHistoryExtension extends Extension {
         this._indicator.add_child(this._icon);
         Main.panel.addToStatusArea('clipboard-history', this._indicator, 1, 'right');
 
-        this._clipboard = St.Clipboard.get_default();
-        this._clipSignal = this._clipboard.connect('owner-change', () => this._onClipboardChanged());
+        this._clipboard = global.display;
+        this._clipSignal = this._clipboard.connect('clipboard-owner-changed', () => this._onClipboardChanged());
     }
 
     disable() {
