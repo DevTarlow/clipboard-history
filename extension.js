@@ -9,6 +9,20 @@ import { buildPopup } from './popup.js';
 
 export default class ClipboardHistoryExtension extends Extension {
     enable() {
+        try {
+            this._enable();
+        } catch (e) {
+            // Never let an extension bug take down the shell: log + notify,
+            // tear down any partial state, then re-throw so GNOME marks the
+            // extension ERROR (the standard safe path — does not crash the shell).
+            logError(e, 'clipboard-history enable failed');
+            Main.notifyError('Clipboard History failed to start', `${e}`);
+            this.disable();
+            throw e;
+        }
+    }
+
+    _enable() {
         const dataDir = GLib.build_filenamev([GLib.get_user_data_dir(), 'clipboard-history']);
         this._store = new HistoryStore(GLib.build_filenamev([dataDir, 'history.json']));
 
@@ -29,7 +43,10 @@ export default class ClipboardHistoryExtension extends Extension {
 
         // Super+Shift+V toggles the popup (schema compiled in schemas/)
         this.settings = this.getSettings();
-        this._keybindingName = 'clipboard-history-popup';
+        // NOTE: the keybinding name MUST equal a real key in our schema —
+        // add_keybinding looks up the accelerator using the name as the key.
+        // A nonexistent key caused a Gio.Settings critical → SIGABRT → shell crash.
+        this._keybindingName = 'popup-shortcut';
         global.display.add_keybinding(
             this._keybindingName,
             this.settings,
