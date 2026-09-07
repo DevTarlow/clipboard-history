@@ -33,7 +33,7 @@ export default class ClipboardHistoryExtension extends Extension {
 
         this._paused = false;
         this._popup = buildPopup(this._indicator.menu, {
-            onCopy: e => this._clipboard.set_text(e.text),
+            onCopy: e => St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, e.text),
             onDelete: id => { this._store.remove(id); this._refresh(); },
             onClear: () => { this._store.clear(); this._refresh(); },
             onTogglePause: () => this._togglePause(),
@@ -54,8 +54,12 @@ export default class ClipboardHistoryExtension extends Extension {
             () => this._indicator.menu.toggle()
         );
 
-        this._clipboard = global.display;
-        this._clipSignal = this._clipboard.connect('clipboard-owner-changed', () => this._onClipboardChanged());
+        // Clipboard watch: Meta.Selection's owner-changed signal.
+        // (St.Clipboard defines NO signals in GNOME 50, and Meta.Display has no
+        // clipboard-owner-changed either — both were tried and failed at runtime.)
+        this._clipboard = global.display.get_selection();
+        this._clipSignal = this._clipboard.connect('owner-changed',
+            (sel, newOwner, selType) => this._onClipboardChanged(selType));
     }
 
     disable() {
@@ -81,13 +85,17 @@ export default class ClipboardHistoryExtension extends Extension {
         this._popup.rebuild(this._store.search(q), this._store.entries.length === 0);
     }
 
-    _onClipboardChanged() {
+    _onClipboardChanged(selType) {
         if (this._paused) return;
-        const text = this._clipboard.get_text();
-        if (!text) return; // image/binary or empty -> skip for MVP
-        const added = this._store.add(text);
-        if (added) log(`clipboard-history: captured ${added.text.slice(0, 60)}`);
-        this._refresh();
+        // Only react to real CLIPBOARD changes, not PRIMARY (middle-click) noise
+        if (selType !== undefined && selType !== Meta.SelectionType.CLIPBOARD) return;
+        const clip = St.Clipboard.get_default();
+        clip.get_text(St.ClipboardType.CLIPBOARD, (clipboard, text) => {
+            if (!text) return; // image/binary or empty -> skip for MVP
+            const added = this._store.add(text);
+            if (added) log(`clipboard-history: captured ${added.text.slice(0, 60)}`);
+            this._refresh();
+        });
     }
 
     _togglePause() {
