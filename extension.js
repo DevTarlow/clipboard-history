@@ -23,7 +23,7 @@ export default class ClipboardHistoryExtension extends Extension {
             onClear: () => { this._store.clear(); this._refresh(); },
             onTogglePause: () => this._togglePause(),
         });
-        this._popup.search.connect('changed', () => this._refresh());
+        this._popup.search.clutter_text.connect('text-changed', () => this._refresh());
         this._refresh();
 
         // Super+Shift+V toggles the popup (schema compiled in schemas/)
