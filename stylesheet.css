@@ -1,0 +1,40 @@
+.clipboard-history-search {
+    margin: 4px 8px;
+    width: 380px;
+}
+.clipboard-history-scroll {
+    max-height: 420px;
+    width: 400px;
+}
+.clipboard-history-row {
+    padding: 6px 8px;
+}
+.clipboard-history-row:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+}
+.clipboard-history-copy {
+    text-align: start;
+}
+.clipboard-history-text {
+    font-size: 12pt;
+}
+.clipboard-history-flash {
+    color: #2ec27e;
+}
+.clipboard-history-action {
+    padding: 0 6px;
+}
+.clipboard-history-action-icon {
+    color: rgba(255, 255, 255, 0.6);
+}
+.clipboard-history-footer {
+    padding: 4px 8px;
+}
+.clipboard-history-footer-btn {
+    padding: 4px 10px;
+}
+.clipboard-history-empty {
+    padding: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}

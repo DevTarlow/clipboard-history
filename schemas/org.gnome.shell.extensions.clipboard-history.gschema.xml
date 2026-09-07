@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.clipboard-history"
+          path="/org/gnome/shell/extensions/clipboard-history/">
+    <key name="popup-shortcut" type="as">
+      <default>['&lt;Super&gt;&lt;Shift&gt;V']</default>
+      <summary>Open clipboard history</summary>
+      <description>Keyboard shortcut to open the clipboard history popup.</description>
+    </key>
+  </schema>
+</schemalist>
