@@ -11,7 +11,7 @@ export default class ClipboardHistoryExtension extends Extension {
         const dataDir = GLib.build_filenamev([GLib.get_user_data_dir(), 'clipboard-history']);
         this._store = new HistoryStore(GLib.build_filenamev([dataDir, 'history.json']));
 
-        this._indicator = new PanelMenu.Button(0.0, 'Clipboard History', true);
+        this._indicator = new PanelMenu.Button(0.0, 'Clipboard History', false);
         this._icon = new St.Icon({ icon_name: 'edit-paste-symbolic', style_class: 'system-status-icon' });
         this._indicator.add_child(this._icon);
         Main.panel.addToStatusArea('clipboard-history', this._indicator, 1, 'right');
