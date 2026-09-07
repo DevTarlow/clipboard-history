@@ -47,7 +47,9 @@ export function buildPopup(menu, { onCopy, onDelete, onClear, onTogglePause }) {
 
         const copyBtn = new St.Button({ style_class: 'clipboard-history-copy' });
         const label = new St.Label({ text: entry.text, style_class: 'clipboard-history-text' });
-        label.clutter_text.ellipsize = Clutter.TextEllipsizeMode.END;
+        // Clutter.TextEllipsizeMode is NOT introspected in this mutter — use
+        // the numeric PangoEllipsizeMode value directly (END = 3).
+        label.clutter_text.ellipsize = 3;
         label.clutter_text.max_width = 380;
         copyBtn.set_child(label);
 
